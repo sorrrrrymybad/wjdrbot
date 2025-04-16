@@ -367,7 +367,7 @@ tasks:
           top: 1000 # 上边界Y坐标
           right: 355 # 右边界X坐标
           bottom: 1355 # 下边界Y坐标
-        threshold: 0.95 # 自定义匹配阈值
+        threshold: 0.94 # 自定义匹配阈值
         notify: false # 启用此操作的通知
         skip_if_match: true # 匹配成功时跳过后续操作
         skip_count: 9 # 跳过的操作数量
@@ -478,7 +478,7 @@ tasks:
           top: 985 # 上边界Y坐标
           right: 675 # 右边界X坐标
           bottom: 1355 # 下边界Y坐标
-        threshold: 0.95 # 自定义匹配阈值
+        threshold: 0.94 # 自定义匹配阈值
         notify: true # 启用此操作的通知
         skip_if_match: true # 匹配成功时跳过后续操作
         skip_count: 10 # 跳过的操作数量

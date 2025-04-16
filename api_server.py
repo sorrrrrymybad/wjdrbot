@@ -9,6 +9,7 @@ import sys
 from ruamel.yaml import YAML
 from functools import wraps
 from dotenv import load_dotenv
+import time
 
 # 加载 .env 文件
 load_dotenv()
@@ -132,6 +133,87 @@ def close_app(package_name):
             }), 500
     except Exception as e:
         log(f"关闭应用失败: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+@app.route('/logs', methods=['GET'])
+@require_api_key
+def get_logs():
+    """获取最新的日志内容"""
+    try:
+        # 获取查询参数
+        lines = request.args.get('lines', default=100, type=int)  # 默认返回最后100行
+        
+        # 获取日志文件路径
+        log_dir = "logs"
+        if not os.path.exists(log_dir):
+            return jsonify({
+                'success': False,
+                'error': '日志目录不存在'
+            }), 404
+        
+        # 获取最新的日志文件
+        log_files = [f for f in os.listdir(log_dir) if f.startswith('app_')]
+        if not log_files:
+            return jsonify({
+                'success': False,
+                'error': '没有找到日志文件'
+            }), 404
+            
+        latest_log = max(log_files, key=lambda x: os.path.getmtime(os.path.join(log_dir, x)))
+        log_path = os.path.join(log_dir, latest_log)
+        
+        # 读取日志内容
+        with open(log_path, 'r', encoding='utf-8') as f:
+            # 读取所有行并保留最后N行
+            all_lines = f.readlines()
+            log_content = all_lines[-lines:] if lines > 0 else all_lines
+        
+        return jsonify({
+            'success': True,
+            'log_file': latest_log,
+            'content': log_content
+        })
+    except Exception as e:
+        log(f"获取日志失败: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+@app.route('/process/stop', methods=['POST'])
+@require_api_key
+def stop_process():
+    """结束当前进程"""
+    try:
+        if task_manager:
+            # 停止任务管理器
+            task_manager.stop()
+            log("任务管理器已停止")
+            
+            # 发送关闭信号给主进程
+            def delayed_shutdown():
+                time.sleep(1)  # 等待1秒确保响应能够发送
+                os.kill(os.getpid(), signal.SIGTERM)
+            
+            # 在新线程中执行延迟关闭
+            shutdown_thread = threading.Thread(target=delayed_shutdown)
+            shutdown_thread.daemon = True
+            shutdown_thread.start()
+            
+            return jsonify({
+                'success': True,
+                'message': '进程正在关闭...'
+            })
+        else:
+            return jsonify({
+                'success': False,
+                'error': '任务管理器未初始化'
+            }), 500
+    except Exception as e:
+        log(f"停止进程失败: {e}")
         return jsonify({
             'success': False,
             'error': str(e)
