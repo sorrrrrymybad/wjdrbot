@@ -7,12 +7,36 @@ import heapq
 import signal
 import sys
 from ruamel.yaml import YAML
+from functools import wraps
+from dotenv import load_dotenv
+
+# 加载 .env 文件
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)  # 允许跨域请求
 
 # 全局任务管理器实例
 task_manager = None
+
+# 从环境变量获取 API 密钥
+API_KEY = os.getenv('API_KEY')
+if not API_KEY:
+    raise ValueError("API_KEY 未在 .env 文件中设置")
+
+def require_api_key(f):
+    """验证 API 密钥的装饰器"""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        auth_header = request.headers.get('X-API-Key')
+        if auth_header and auth_header == API_KEY:
+            return f(*args, **kwargs)
+        else:
+            return jsonify({
+                'success': False,
+                'error': '无效的 API 密钥'
+            }), 401
+    return decorated_function
 
 def load_config():
     yaml = YAML()
@@ -28,6 +52,7 @@ def save_config(config):
         yaml.dump(config, f)
 
 @app.route('/tasks', methods=['GET'])
+@require_api_key
 def get_tasks():
     """获取所有任务状态"""
     try:
@@ -45,6 +70,7 @@ def get_tasks():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 @app.route('/tasks/<task_name>', methods=['PUT'])
+@require_api_key
 def update_task(task_name):
     """更新任务状态"""
     try:
@@ -86,6 +112,7 @@ def update_task(task_name):
         return jsonify({'success': False, 'error': str(e)}), 500
 
 @app.route('/apps/<package_name>/close', methods=['POST'])
+@require_api_key
 def close_app(package_name):
     """关闭指定的应用"""
     try:

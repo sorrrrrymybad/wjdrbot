@@ -1,0 +1,673 @@
+app_package: "com.gof.china" # 替换为你的应用包名
+idle_timeout: 3000 # 空闲超时时间（秒）
+startup_wait_time: 15 # 应用启动等待时间（秒）
+
+# 调试相关配置
+debug:
+  save_images: true # 是否保存调试图片
+  save_path: "images/tmp" # 调试图片保存路径
+
+# Telegram 通知配置
+telegram:
+  enabled: true
+
+# 应用启动时执行的操作
+startup_actions:
+  # - type: "image_check"
+  #   image: "images/close.png"
+  #   region:
+  #     left: 990 # 左边界X坐标
+  #     top: 36 # 上边界Y坐标
+  #     right: 1045 # 右边界X坐标
+  #     bottom: 95 # 下边界Y坐标
+  #   action: "click"
+  - type: "find_image"
+    image: "images/close_popup.png" # 关闭可能出现的弹窗
+    threshold: 0.7
+  - type: "wait"
+    time: 5
+
+tasks:
+  task1:
+    enabled: true
+    name: "示例任务1"
+    cooldown:
+      type: "fixed" # fixed 或 auto
+      time: 200 # 固定等待时间（秒）
+    actions:
+      - type: "image_check"
+        image: "images/world.png"
+        region:
+          left: 921 # 左边界X坐标
+          top: 2227 # 上边界Y坐标
+          right: 1036 # 右边界X坐标
+          bottom: 2385 # 下边界Y坐标
+        threshold: 0.95 # 自定义匹配阈值
+        notify: true # 启用此操作的通知
+        skip_if_match: true # 匹配成功时跳过后续操作
+        skip_count: 10 # 跳过的操作数量
+        action: "click"
+      # - type: "wait"
+      #   time: 2
+      # - type: "click"
+      #   x: 500
+      #   y: 600
+
+  task2:
+    enabled: false
+    name: "示例任务2"
+    cooldown:
+      type: "fixed"
+      time: 600
+    actions:
+      - type: "get_countdown"
+        region:
+          left: 490 # 倒计时区域左边界
+          top: 1150 # 倒计时区域上边界
+          right: 650 # 倒计时区域右边界
+          bottom: 1185 # 倒计时区域下边界
+
+  Storehouse:
+    enabled: false
+    name: "仓库领取"
+    cooldown:
+      type: "fixed" # fixed 或 auto
+      time: 3600 # 固定等待时间（秒）
+    actions:
+      - type: "find_image"
+        image: "images/reconnect.png"
+        threshold: 0.8 # 可选，默认为0.8
+        notify: false # 禁用此操作的通知
+        offset_x: 0 # 可选，点击位置的X偏移量
+        offset_y: 0 # 可选，点击位置的Y偏移量
+        skip_if_match: false # 匹配成功时跳过后续操作
+        skip_count: 0 # 跳过接下来的2个操作
+      - type: "wait"
+        time: 2
+      - type: "image_check"
+        image: "images/world.png"
+        region:
+          left: 886 # 左边界X坐标
+          top: 1755 # 上边界Y坐标
+          right: 1060 # 右边界X坐标
+          bottom: 1900 # 下边界Y坐标
+        threshold: 0.9 # 自定义匹配阈值
+        notify: false # 禁用此操作的通知
+        skip_if_match: false # 匹配成功时跳过后续操作
+        skip_count: 0 # 跳过的操作数量
+        action: "click"
+      - type: "wait"
+        time: 10
+      - type: "click"
+        x: 30
+        y: 826
+      - type: "wait"
+        time: 1
+      - type: "swipe"
+        start_x: 150 # 起始点X坐标
+        start_y: 1134 # 起始点Y坐标
+        end_x: 150 # 结束点X坐标
+        end_y: 491 # 结束点Y坐标
+        duration: 500 # 滑动持续时间（毫秒）
+      - type: "wait"
+        time: 2
+      - type: "click"
+        x: 594
+        y: 1068
+      - type: "wait"
+        time: 1
+      - type: "get_countdown"
+        region:
+          left: 400 # 倒计时区域左边界
+          top: 1645 # 倒计时区域上边界
+          right: 680 # 倒计时区域右边界
+          bottom: 1710 # 倒计时区域下边界
+      - type: "wait"
+        time: 2
+      - type: "click"
+        x: 300
+        y: 1200
+      - type: "wait"
+        time: 1
+      - type: "image_check"
+        image: "images/city.png"
+        region:
+          left: 921 # 左边界X坐标
+          top: 2227 # 上边界Y坐标
+          right: 1036 # 右边界X坐标
+          bottom: 2385 # 下边界Y坐标
+        threshold: 0.9 # 自定义匹配阈值
+        notify: false # 禁用此操作的通知
+        skip_if_match: false # 匹配成功时跳过后续操作
+        skip_count: 0 # 跳过的操作数量
+        action: "click"
+      - type: "wait"
+        time: 8
+
+  AllianceDonation:
+    enabled: true
+    name: "联盟捐赠"
+    cooldown:
+      type: "fixed"
+      time: 3600
+    actions:
+      - type: "find_image" # 重新连接
+        image: "images/reconnect.png"
+        threshold: 0.8 # 可选，默认为0.8
+        notify: false # 禁用此操作的通知
+        offset_x: 0 # 可选，点击位置的X偏移量
+        offset_y: 0 # 可选，点击位置的Y偏移量
+        skip_if_match: false # 匹配成功时跳过后续操作
+        skip_count: 0 # 跳过接下来的2个操作
+      - type: "wait"
+        time: 2
+      - type: "find_image" #关闭弹窗
+        image: "images/close_popup.png"
+        threshold: 0.8 # 可选，默认为0.8
+        notify: false # 禁用此操作的通知
+        offset_x: 0 # 可选，点击位置的X偏移量
+        offset_y: 0 # 可选，点击位置的Y偏移量
+        skip_if_match: false # 匹配成功时跳过后续操作
+        skip_count: 0 # 跳过接下来的2个操作
+      - type: "wait"
+        time: 2
+      - type: "image_check" #晨曦岛回到主界面
+        image: "images/city.png"
+        region:
+          left: 921 # 左边界X坐标
+          top: 2227 # 上边界Y坐标
+          right: 1036 # 右边界X坐标
+          bottom: 2385 # 下边界Y坐标
+        threshold: 0.9 # 自定义匹配阈值
+        notify: false # 禁用此操作的通知
+        skip_if_match: false # 匹配成功时跳过后续操作
+        skip_count: 0 # 跳过的操作数量
+        action: "click"
+      - type: "wait"
+        time: 3
+      - type: "click" # 联盟界面
+        x: 792
+        y: 2329
+      - type: "wait"
+        time: 1
+      - type: "click" # 联盟科技
+        x: 766
+        y: 1500
+      - type: "wait"
+        time: 1
+      - type: "find_image" # 寻找有没有点赞
+        image: "images/good_choose.png"
+        threshold: 0.8 # 可选，默认为0.8
+        notify: false # 禁用此操作的通知
+        offset_x: 0 # 可选，点击位置的X偏移量
+        offset_y: 0 # 可选，点击位置的Y偏移量
+        skip_if_match: false # 匹配成功时跳过后续操作
+        skip_count: 0 # 跳过接下来的2个操作
+      - type: "wait"
+        time: 1
+      - type: "long_press" #长按捐献
+        x: 760 # X坐标
+        y: 1834 # Y坐标
+        duration: 5000 # 长按持续时间（毫秒）
+      - type: "wait"
+        time: 1
+      - type: "click" # 点击空白退出
+        x: 528
+        y: 2200
+      - type: "wait"
+        time: 1
+      - type: "click" #返回
+        x: 85
+        y: 160
+      - type: "click" #返回
+        x: 85
+        y: 160
+
+  Mail:
+    enabled: false
+    name: "邮件领取"
+    cooldown:
+      type: "fixed" # fixed 或 auto
+      time: 600 # 固定等待时间（秒）
+    actions:
+      - type: "find_image"
+        image: "images/reconnect.png"
+        threshold: 0.8 # 可选，默认为0.8
+        notify: false # 禁用此操作的通知
+        offset_x: 0 # 可选，点击位置的X偏移量
+        offset_y: 0 # 可选，点击位置的Y偏移量
+        skip_if_match: false # 匹配成功时跳过后续操作
+        skip_count: 0 # 跳过接下来的2个操作
+      - type: "wait"
+        time: 3
+      - type: "click"
+        x: 985
+        y: 1565
+      - type: "wait"
+        time: 2
+      - type: "click"
+        x: 330
+        y: 185
+      - type: "wait"
+        time: 2
+      - type: "click"
+        x: 860
+        y: 1860
+      - type: "wait"
+        time: 2
+      - type: "click"
+        x: 330
+        y: 185
+      - type: "wait"
+        time: 2
+      - type: "click"
+        x: 540
+        y: 180
+      - type: "wait"
+        time: 2
+      - type: "click"
+        x: 860
+        y: 1860
+      - type: "wait"
+        time: 2
+      - type: "click"
+        x: 540
+        y: 180
+      - type: "wait"
+        time: 2
+      - type: "click"
+        x: 740
+        y: 180
+      - type: "wait"
+        time: 2
+      - type: "click"
+        x: 860
+        y: 1860
+      - type: "wait"
+        time: 2
+      - type: "click"
+        x: 740
+        y: 180
+      - type: "wait"
+        time: 2
+      - type: "click"
+        x: 55
+        y: 55
+      - type: "wait"
+        time: 5
+
+  PetAllianceTreasure:
+    enabled: false
+    name: "宠物联盟宝藏"
+    cooldown:
+      type: "fixed" # fixed 或 auto
+      time: 60 # 固定等待时间（秒）
+    actions:
+      - type: "click"
+        x: 985
+        y: 1565
+      - type: "wait"
+        time: 2
+      - type: "click"
+        x: 330
+        y: 185
+      - type: "wait"
+        time: 2
+
+  Zdy_left:
+    enabled: true
+    name: "总动员左"
+    cooldown:
+      type: "fixed" # fixed 或 auto
+      time: 300 # 固定等待时间（秒）
+    actions:
+      - type: "find_image" # 重新连接
+        image: "images/reconnect.png"
+        threshold: 0.8 # 可选，默认为0.8
+        notify: false # 禁用此操作的通知
+        offset_x: 0 # 可选，点击位置的X偏移量
+        offset_y: 0 # 可选，点击位置的Y偏移量
+        skip_if_match: false # 匹配成功时跳过后续操作
+        skip_count: 0 # 跳过接下来的2个操作
+      - type: "wait"
+        time: 2
+      - type: "find_image" #关闭弹窗
+        image: "images/close_popup.png"
+        threshold: 0.8 # 可选，默认为0.8
+        notify: false # 禁用此操作的通知
+        offset_x: 0 # 可选，点击位置的X偏移量
+        offset_y: 0 # 可选，点击位置的Y偏移量
+        skip_if_match: false # 匹配成功时跳过后续操作
+        skip_count: 0 # 跳过接下来的2个操作
+      - type: "wait"
+        time: 2
+      - type: "image_check" #晨曦岛回到主界面
+        image: "images/city.png"
+        region:
+          left: 921 # 左边界X坐标
+          top: 2227 # 上边界Y坐标
+          right: 1036 # 右边界X坐标
+          bottom: 2385 # 下边界Y坐标
+        threshold: 0.9 # 自定义匹配阈值
+        notify: false # 禁用此操作的通知
+        skip_if_match: false # 匹配成功时跳过后续操作
+        skip_count: 0 # 跳过的操作数量
+        action: "click"
+      - type: "wait"
+        time: 3
+      - type: "click" # 点击常规活动
+        x: 997
+        y: 357
+      - type: "wait"
+        time: 1
+      - type: "image_check" #检查是否正在冷却
+        image: "images/cooldown.png"
+        region:
+          left: 80 # 左边界X坐标
+          top: 1000 # 上边界Y坐标
+          right: 355 # 右边界X坐标
+          bottom: 1355 # 下边界Y坐标
+        threshold: 0.95 # 自定义匹配阈值
+        notify: false # 启用此操作的通知
+        skip_if_match: true # 匹配成功时跳过后续操作
+        skip_count: 9 # 跳过的操作数量
+        action: "click"
+      - type: "image_check" # 匹配大拳头（如果匹配到就跳过）
+        image: "images/zdy_860.png"
+        region:
+          left: 60 # 左边界X坐标
+          top: 985 # 上边界Y坐标
+          right: 355 # 右边界X坐标
+          bottom: 1355 # 下边界Y坐标
+        threshold: 0.95 # 自定义匹配阈值
+        notify: true # 启用此操作的通知
+        skip_if_match: true # 匹配成功时跳过后续操作
+        skip_count: 10 # 跳过的操作数量
+        action: "click"
+      - type: "wait"
+        time: 1
+      - type: "click" # 点击选项
+        x: 225
+        y: 1175
+      - type: "wait"
+        time: 1
+      - type: "click" # 刷新
+        x: 320
+        y: 1500
+      - type: "wait"
+        time: 1
+      - type: "click" #确认刷新
+        x: 740
+        y: 1470
+      - type: "wait"
+        time: 1
+      - type: "get_countdown" # 获取倒计时
+        region:
+          left: 170 # 倒计时区域左边界
+          top: 1150 # 倒计时区域上边界
+          right: 330 # 倒计时区域右边界
+          bottom: 1185 # 倒计时区域下边界
+      - type: "wait"
+        time: 1
+      - type: "click" #返回
+        x: 85
+        y: 160
+
+  Zdy_right:
+    enabled: true
+    name: "总动员右"
+    cooldown:
+      type: "fixed" # fixed 或 auto
+      time: 300 # 固定等待时间（秒）
+    actions:
+      - type: "find_image" # 重新连接
+        image: "images/reconnect.png"
+        threshold: 0.8 # 可选，默认为0.8
+        notify: false # 禁用此操作的通知
+        offset_x: 0 # 可选，点击位置的X偏移量
+        offset_y: 0 # 可选，点击位置的Y偏移量
+        skip_if_match: false # 匹配成功时跳过后续操作
+        skip_count: 0 # 跳过接下来的2个操作
+      - type: "wait"
+        time: 2
+      - type: "find_image" #关闭弹窗
+        image: "images/close_popup.png"
+        threshold: 0.8 # 可选，默认为0.8
+        notify: false # 禁用此操作的通知
+        offset_x: 0 # 可选，点击位置的X偏移量
+        offset_y: 0 # 可选，点击位置的Y偏移量
+        skip_if_match: false # 匹配成功时跳过后续操作
+        skip_count: 0 # 跳过接下来的2个操作
+      - type: "wait"
+        time: 2
+      - type: "image_check" #晨曦岛回到主界面
+        image: "images/city.png"
+        region:
+          left: 921 # 左边界X坐标
+          top: 2227 # 上边界Y坐标
+          right: 1036 # 右边界X坐标
+          bottom: 2385 # 下边界Y坐标
+        threshold: 0.9 # 自定义匹配阈值
+        notify: false # 禁用此操作的通知
+        skip_if_match: false # 匹配成功时跳过后续操作
+        skip_count: 0 # 跳过的操作数量
+        action: "click"
+      - type: "wait"
+        time: 3
+      - type: "click" # 点击常规活动
+        x: 997
+        y: 357
+      - type: "wait"
+        time: 1
+      - type: "image_check" #检查是否正在冷却
+        image: "images/cooldown.png"
+        region:
+          left: 400 # 左边界X坐标
+          top: 1000 # 上边界Y坐标
+          right: 675 # 右边界X坐标
+          bottom: 1355 # 下边界Y坐标
+        threshold: 0.95 # 自定义匹配阈值
+        notify: true # 启用此操作的通知
+        skip_if_match: true # 匹配成功时跳过后续操作
+        skip_count: 9 # 跳过的操作数量
+        action: "click"
+      - type: "image_check" # 匹配大拳头（如果匹配到就跳过）
+        image: "images/zdy_860.png"
+        region:
+          left: 380 # 左边界X坐标
+          top: 985 # 上边界Y坐标
+          right: 675 # 右边界X坐标
+          bottom: 1355 # 下边界Y坐标
+        threshold: 0.95 # 自定义匹配阈值
+        notify: true # 启用此操作的通知
+        skip_if_match: true # 匹配成功时跳过后续操作
+        skip_count: 10 # 跳过的操作数量
+        action: "click"
+      - type: "wait"
+        time: 1
+      - type: "click" # 点击选项
+        x: 545
+        y: 1175
+      - type: "wait"
+        time: 1
+      - type: "click" # 刷新
+        x: 320
+        y: 1500
+      - type: "wait"
+        time: 1
+      - type: "click" # 确认刷新
+        x: 740
+        y: 1470
+      - type: "wait"
+        time: 1
+      - type: "get_countdown" # 获取倒计时
+        region:
+          left: 490 # 倒计时区域左边界
+          top: 1150 # 倒计时区域上边界
+          right: 650 # 倒计时区域右边界
+          bottom: 1185 # 倒计时区域下边界
+      - type: "wait"
+        time: 1
+      - type: "click" # 返回
+        x: 85
+        y: 160
+
+  AutomaticHunting:
+    enabled: false
+    name: "自动狩猎"
+    cooldown:
+      type: "fixed"
+      time: 360000
+    actions:
+      - type: "find_image" # 重新连接
+        image: "images/reconnect.png"
+        threshold: 0.8 # 可选，默认为0.8
+        notify: false # 禁用此操作的通知
+        offset_x: 0 # 可选，点击位置的X偏移量
+        offset_y: 0 # 可选，点击位置的Y偏移量
+        skip_if_match: false # 匹配成功时跳过后续操作
+        skip_count: 0 # 跳过接下来的2个操作
+      - type: "wait"
+        time: 2
+      - type: "find_image" #关闭弹窗
+        image: "images/close_popup.png"
+        threshold: 0.8 # 可选，默认为0.8
+        notify: false # 禁用此操作的通知
+        offset_x: 0 # 可选，点击位置的X偏移量
+        offset_y: 0 # 可选，点击位置的Y偏移量
+        skip_if_match: false # 匹配成功时跳过后续操作
+        skip_count: 0 # 跳过接下来的2个操作
+      - type: "wait"
+        time: 2
+      - type: "image_check" #晨曦岛回到主界面
+        image: "images/city.png"
+        region:
+          left: 921 # 左边界X坐标
+          top: 2227 # 上边界Y坐标
+          right: 1036 # 右边界X坐标
+          bottom: 2385 # 下边界Y坐标
+        threshold: 0.9 # 自定义匹配阈值
+        notify: false # 禁用此操作的通知
+        skip_if_match: false # 匹配成功时跳过后续操作
+        skip_count: 0 # 跳过的操作数量
+        action: "click"
+      - type: "wait"
+        time: 3
+      - type: "image_check" # 去野外界面
+        image: "images/world.png"
+        region:
+          left: 921 # 左边界X坐标
+          top: 2227 # 上边界Y坐标
+          right: 1036 # 右边界X坐标
+          bottom: 2385 # 下边界Y坐标
+        threshold: 0.9 # 自定义匹配阈值
+        notify: false # 禁用此操作的通知
+        skip_if_match: false # 匹配成功时跳过后续操作
+        skip_count: 0 # 跳过的操作数量
+        action: "click"
+      - type: "wait"
+        time: 3
+      - type: "click" # 搜索
+        x: 72
+        y: 1787
+      - type: "wait"
+        time: 1
+      - type: "swipe" # 滑到头
+        start_x: 131 # 起始点X坐标
+        start_y: 1880 # 起始点Y坐标
+        end_x: 880 # 结束点X坐标
+        end_y: 1880 # 结束点Y坐标
+        duration: 300 # 滑动持续时间（毫秒）
+      - type: "wait"
+        time: 1
+      - type: "click" # 野兽
+        x: 120
+        y: 1841
+      - type: "wait"
+        time: 1
+      - type: "click" # 自动狩猎
+        x: 955
+        y: 2255
+      - type: "wait"
+        time: 1
+      - type: "click" # 排遣队列
+        x: 197
+        y: 1517
+      - type: "wait"
+        time: 1
+      - type: "click" # 7号队列
+        x: 760
+        y: 290
+      - type: "wait"
+        time: 1
+      - type: "click" # 派遣
+        x: 818
+        y: 2300
+      - type: "wait"
+        time: 1
+      - type: "click" #返回
+        x: 85
+        y: 160
+
+  Cxd:
+    enabled: true
+    name: "返回晨曦岛"
+    cooldown:
+      type: "fixed" # fixed 或 auto
+      time: 180 # 固定等待时间（秒）
+    actions:
+      - type: "find_image" # 重新连接
+        image: "images/reconnect.png"
+        threshold: 0.8 # 可选，默认为0.8
+        notify: false # 禁用此操作的通知
+        offset_x: 0 # 可选，点击位置的X偏移量
+        offset_y: 0 # 可选，点击位置的Y偏移量
+        skip_if_match: false # 匹配成功时跳过后续操作
+        skip_count: 0 # 跳过接下来的2个操作
+      - type: "wait"
+        time: 2
+      - type: "find_image" # 关闭弹窗
+        image: "images/close_popup.png"
+        threshold: 0.8 # 可选，默认为0.8
+        notify: false # 禁用此操作的通知
+        offset_x: 0 # 可选，点击位置的X偏移量
+        offset_y: 0 # 可选，点击位置的Y偏移量
+        skip_if_match: false # 匹配成功时跳过后续操作
+        skip_count: 0 # 跳过接下来的2个操作
+      - type: "wait"
+        time: 2
+      - type: "image_check" # 检测是不是已经在晨曦岛了
+        image: "images/tree.png"
+        region:
+          left: 35 # 左边界X坐标
+          top: 1742 # 上边界Y坐标
+          right: 100 # 右边界X坐标
+          bottom: 1820 # 下边界Y坐标
+        threshold: 0.90 # 自定义匹配阈值
+        notify: false # 启用此操作的通知
+        skip_if_match: true # 匹配成功时跳过后续操作
+        skip_count: 10 # 跳过的操作数量
+        action: "click"
+      - type: "wait"
+        time: 1
+      - type: "click" # 打开侧边栏
+        x: 25
+        y: 1078
+      - type: "wait"
+        time: 1
+      - type: "click" # 点击城镇
+        x: 176
+        y: 700
+      - type: "wait"
+        time: 1
+      - type: "swipe" # 滑到底
+        start_x: 274 # 起始点X坐标
+        start_y: 1421 # 起始点Y坐标
+        end_x: 274 # 结束点X坐标
+        end_y: 363 # 结束点Y坐标
+        duration: 200 # 滑动持续时间（毫秒）
+      - type: "wait"
+        time: 1
+      - type: "click" # 点击晨曦岛
+        x: 606
+        y: 1370

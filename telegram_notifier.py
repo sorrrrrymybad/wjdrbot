@@ -1,12 +1,21 @@
 import requests
 import os
 from logger import log
+from dotenv import load_dotenv
+
+# 加载 .env 文件
+load_dotenv()
 
 class TelegramNotifier:
-    def __init__(self, token, chat_id):
-        self.token = token
-        self.chat_id = chat_id
-        self.base_url = f"https://api.telegram.org/bot{token}"
+    def __init__(self):
+        # 从环境变量获取配置
+        self.token = os.getenv('TELEGRAM_BOT_TOKEN')
+        self.chat_id = os.getenv('TELEGRAM_CHAT_ID')
+        
+        if not self.token or not self.chat_id:
+            raise ValueError("TELEGRAM_BOT_TOKEN 或 TELEGRAM_CHAT_ID 未在 .env 文件中设置")
+        
+        self.base_url = f"https://api.telegram.org/bot{self.token}"
         log("Telegram通知器初始化完成")
 
     def send_message(self, message):
@@ -47,10 +56,10 @@ class TelegramNotifier:
 # 创建全局通知器实例
 notifier = None
 
-def init_notifier(token, chat_id):
+def init_notifier():
     """初始化通知器"""
     global notifier
-    notifier = TelegramNotifier(token, chat_id)
+    notifier = TelegramNotifier()
     return notifier
 
 def send_notification(message, photo_path=None):

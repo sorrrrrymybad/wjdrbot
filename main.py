@@ -20,12 +20,11 @@ def main():
         log("配置文件加载完成")
         
         # 初始化Telegram通知器
-        if 'telegram' in config and config['telegram']['enabled']:
-            init_notifier(
-                config['telegram']['token'],
-                config['telegram']['chat_id']
-            )
+        try:
+            init_notifier()
             log("Telegram通知器初始化完成")
+        except Exception as e:
+            log(f"Telegram通知器初始化失败: {e}")
         
         # 导入TaskManager
         from task_manager import TaskManager
