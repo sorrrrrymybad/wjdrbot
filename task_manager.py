@@ -252,8 +252,8 @@ class TaskManager:
                 return False
             
             # 保存调试图片
-            # self.save_image(screen_bgr, 'screen')
-            self.save_image(template, 'template')
+            self.save_image(screen_bgr, 'screen')
+            # self.save_image(template, 'template')
             
             # 进行模板匹配
             result = cv2.matchTemplate(screen_bgr, template, cv2.TM_CCOEFF_NORMED)
@@ -471,19 +471,6 @@ class TaskManager:
             if template is None:
                 log(f"无法读取模板图片: {template_path}")
                 return False
-            
-            # 保存原始模板图片（用于调试）
-            # self.save_image(template, 'template_original')
-            
-            # 确保模板图片和ROI具有相同的大小
-            # try:
-            #     template = cv2.resize(template, (roi_bgr.shape[1], roi_bgr.shape[0]))
-            # except Exception as e:
-            #     print(f"调整模板大小出错: {e}")
-            #     return False
-            
-            # 保存调整大小后的模板图片（用于调试）
-            # self.save_image(template, 'template_resized')
             
             # 检查两个图像的形状和类型是否匹配
             if roi_bgr.shape != template.shape:

@@ -85,6 +85,31 @@ def update_task(task_name):
         log(f"更新任务状态失败: {e}")
         return jsonify({'success': False, 'error': str(e)}), 500
 
+@app.route('/apps/<package_name>/close', methods=['POST'])
+def close_app(package_name):
+    """关闭指定的应用"""
+    try:
+        if task_manager:
+           # 直接使用 ADB 关闭应用
+            task_manager.adb.force_stop_app(package_name)
+            log(f"已强制停止应用: {package_name}")
+                
+            return jsonify({
+                'success': True,
+                'message': f'应用 {package_name} 已关闭'
+            })
+        else:
+            return jsonify({
+                'success': False,
+                'error': '任务管理器未初始化'
+            }), 500
+    except Exception as e:
+        log(f"关闭应用失败: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
 def start_api_server(host='0.0.0.0', port=1234):
     """启动API服务器"""
     app.run(host=host, port=port)
