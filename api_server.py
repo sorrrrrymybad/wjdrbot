@@ -85,46 +85,80 @@ def get_tasks():
         log(f"获取任务列表失败: {e}")
         return jsonify({'success': False, 'error': str(e)}), 500
 
-@app.route('/tasks/<task_name>', methods=['PUT'])
+@app.route('/tasks', methods=['PUT'])
 @require_api_key
-def update_task(task_name):
-    """更新任务状态"""
+def update_task():
+    """批量更新任务状态"""
     try:
-        config = load_config()
-        if task_name not in config['tasks']:
-            return jsonify({'success': False, 'error': '任务不存在'}), 404
-        
         data = request.get_json()
-        if 'enabled' not in data:
-            return jsonify({'success': False, 'error': '缺少enabled参数'}), 400
+        if not isinstance(data, list):
+            return jsonify({'success': False, 'error': '请求数据必须是数组格式'}), 400
         
-        # 更新任务状态
-        config['tasks'][task_name]['enabled'] = data['enabled']
+        config = load_config()
+        results = []
+        enabled_tasks = []
+        has_enabled_task = False
+        
+        # 处理每个任务的更新
+        for task_update in data:
+            if 'name' not in task_update or 'enabled' not in task_update:
+                results.append({
+                    'name': task_update.get('name', 'unknown'),
+                    'success': False,
+                    'error': '缺少必要参数 name 或 enabled'
+                })
+                continue
+                
+            task_name = task_update['name']
+            if task_name not in config['tasks']:
+                results.append({
+                    'name': task_name,
+                    'success': False,
+                    'error': '任务不存在'
+                })
+                continue
+            
+            # 更新任务状态
+            config['tasks'][task_name]['enabled'] = task_update['enabled']
+            if task_update['enabled']:
+                has_enabled_task = True
+            
+            results.append({
+                'name': task_name,
+                'success': True,
+                'enabled': task_update['enabled']
+            })
+        
+        # 保存配置
         save_config(config)
         
         # 处理任务队列
         if task_manager:
-            enabled_tasks = []  # 存储需要启用的任务
             with task_manager.task_lock:
-                if not data['enabled']:
-                    # 如果任务被禁用，从队列中移除
-                    task_manager.task_queue = [(time, name) for time, name in task_manager.task_queue if name != task_name]
-                    heapq.heapify(task_manager.task_queue)
-                else:
-                    # 如果任务被启用，清空队列并记录需要启用的任务
+                # 如果有任务被启用，清空队列并重新调度所有启用的任务
+                if has_enabled_task:
                     task_manager.task_queue = []
                     for name, task in config['tasks'].items():
                         if task['enabled']:
                             enabled_tasks.append(name)
+                else:
+                    # 否则只移除被禁用的任务
+                    disabled_tasks = [t['name'] for t in data if not t['enabled']]
+                    task_manager.task_queue = [(time, name) for time, name in task_manager.task_queue 
+                                             if name not in disabled_tasks]
+                    heapq.heapify(task_manager.task_queue)
             
-            # 在释放锁后重新安排任务
+            # 在释放锁后重新安排启用的任务
             for name in enabled_tasks:
                 task_manager.schedule_task(name)
         
-        log(f"任务 {task_name} 状态已更新为: {data['enabled']}")
-        return jsonify({'success': True})
+        log(f"批量更新任务状态完成，结果: {results}")
+        return jsonify({
+            'success': True,
+            'results': results
+        })
     except Exception as e:
-        log(f"更新任务状态失败: {e}")
+        log(f"批量更新任务状态失败: {e}")
         return jsonify({'success': False, 'error': str(e)}), 500
 
 @app.route('/apps/<package_name>/close', methods=['POST'])

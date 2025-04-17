@@ -315,7 +315,7 @@ tasks:
         time: 2
 
   Zdy_left:
-    enabled: true
+    enabled: false
     name: "总动员左"
     cooldown:
       type: "fixed" # fixed 或 auto
@@ -414,7 +414,7 @@ tasks:
         y: 160
 
   Zdy_right:
-    enabled: true
+    enabled: false
     name: "总动员右"
     cooldown:
       type: "fixed" # fixed 或 auto
