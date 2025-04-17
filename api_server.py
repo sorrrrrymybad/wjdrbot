@@ -10,6 +10,7 @@ from ruamel.yaml import YAML
 from functools import wraps
 from dotenv import load_dotenv
 import time
+from datetime import datetime
 
 # 加载 .env 文件
 load_dotenv()
@@ -60,12 +61,26 @@ def get_tasks():
         config = load_config()
         tasks = []
         for name, task in config['tasks'].items():
+            # 获取任务的下一次执行时间
+            next_run = None
+            if task_manager and name in task_manager.task_next_run:
+                next_run_time = task_manager.task_next_run[name]
+                if next_run_time:
+                    next_run = next_run_time.strftime('%Y-%m-%d %H:%M:%S')
+            
             tasks.append({
                 'name': name,
                 'enabled': task['enabled'],
-                'description': task.get('name', '')
+                'description': task.get('name', ''),
+                'next_run': next_run,  # 添加下一次执行时间
+                'cooldown': task.get('cooldown', {})  # 添加冷却时间配置
             })
-        return jsonify({'success': True, 'tasks': tasks})
+        
+        return jsonify({
+            'success': True, 
+            'tasks': tasks,
+            'current_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # 添加当前时间用于对比
+        })
     except Exception as e:
         log(f"获取任务列表失败: {e}")
         return jsonify({'success': False, 'error': str(e)}), 500

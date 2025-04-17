@@ -29,7 +29,7 @@ startup_actions:
 
 tasks:
   task1:
-    enabled: true
+    enabled: false
     name: "示例任务1"
     cooldown:
       type: "fixed" # fixed 或 auto
@@ -466,8 +466,8 @@ tasks:
           top: 1000 # 上边界Y坐标
           right: 675 # 右边界X坐标
           bottom: 1355 # 下边界Y坐标
-        threshold: 0.95 # 自定义匹配阈值
-        notify: true # 启用此操作的通知
+        threshold: 0.94 # 自定义匹配阈值
+        notify: false # 启用此操作的通知
         skip_if_match: true # 匹配成功时跳过后续操作
         skip_count: 9 # 跳过的操作数量
         action: "click"
@@ -614,7 +614,7 @@ tasks:
     name: "返回晨曦岛"
     cooldown:
       type: "fixed" # fixed 或 auto
-      time: 180 # 固定等待时间（秒）
+      time: 300 # 固定等待时间（秒）
     actions:
       - type: "find_image" # 重新连接
         image: "images/reconnect.png"
