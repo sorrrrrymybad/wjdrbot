@@ -97,7 +97,7 @@ def update_task():
         config = load_config()
         results = []
         enabled_tasks = []
-        has_enabled_task = False
+        has_status_change = False  # 标记是否有任务状态发生变化
         
         # 处理每个任务的更新
         for task_update in data:
@@ -118,15 +118,25 @@ def update_task():
                 })
                 continue
             
+            # 检查任务状态是否发生变化
+            current_status = config['tasks'][task_name]['enabled']
+            new_status = task_update['enabled']
+            
+            if current_status != new_status:
+                has_status_change = True
+            
             # 更新任务状态
-            config['tasks'][task_name]['enabled'] = task_update['enabled']
-            if task_update['enabled']:
-                has_enabled_task = True
+            config['tasks'][task_name]['enabled'] = new_status
+            
+            # 如果任务被启用，添加到启用列表
+            if new_status:
+                enabled_tasks.append(task_name)
             
             results.append({
                 'name': task_name,
                 'success': True,
-                'enabled': task_update['enabled']
+                'enabled': new_status,
+                'status_changed': current_status != new_status
             })
         
         # 保存配置
@@ -135,20 +145,18 @@ def update_task():
         # 处理任务队列
         if task_manager:
             with task_manager.task_lock:
-                # 如果有任务被启用，清空队列并重新调度所有启用的任务
-                if has_enabled_task:
+                # 只有当有任务状态发生变化时才重新调度
+                if has_status_change:
+                    # 清空当前任务队列
                     task_manager.task_queue = []
-                    for name, task in config['tasks'].items():
-                        if task['enabled']:
-                            enabled_tasks.append(name)
-                else:
-                    # 否则只移除被禁用的任务
-                    disabled_tasks = [t['name'] for t in data if not t['enabled']]
-                    task_manager.task_queue = [(time, name) for time, name in task_manager.task_queue 
-                                             if name not in disabled_tasks]
-                    heapq.heapify(task_manager.task_queue)
+                    # 清空所有任务的下次执行时间
+                    task_manager.task_next_run = {}
+                    
+                    # 重新初始化所有启用任务的下次执行时间
+                    for name in enabled_tasks:
+                        task_manager.task_next_run[name] = None
             
-            # 在释放锁后重新安排启用的任务
+            # 在释放锁后重新安排所有启用的任务
             for name in enabled_tasks:
                 task_manager.schedule_task(name)
         
