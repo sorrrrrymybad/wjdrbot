@@ -38,10 +38,10 @@ tasks:
       - type: "image_check"
         image: "images/world.png"
         region:
-          left: 921 # 左边界X坐标
-          top: 2227 # 上边界Y坐标
-          right: 1036 # 右边界X坐标
-          bottom: 2385 # 下边界Y坐标
+          left: 70 # 左边界X坐标
+          top: 990 # 上边界Y坐标
+          right: 510 # 右边界X坐标
+          bottom: 1356 # 下边界Y坐标
         threshold: 0.95 # 自定义匹配阈值
         notify: true # 启用此操作的通知
         skip_if_match: true # 匹配成功时跳过后续操作
@@ -62,10 +62,10 @@ tasks:
     actions:
       - type: "get_countdown"
         region:
-          left: 490 # 倒计时区域左边界
-          top: 1150 # 倒计时区域上边界
-          right: 650 # 倒计时区域右边界
-          bottom: 1185 # 倒计时区域下边界
+          left: 730 # 倒计时区域左边界
+          top: 1115 # 倒计时区域上边界
+          right: 890 # 倒计时区域右边界
+          bottom: 1150 # 倒计时区域下边界
 
   Storehouse:
     enabled: false
@@ -145,7 +145,7 @@ tasks:
         time: 8
 
   AllianceDonation:
-    enabled: true
+    enabled: false
     name: "联盟捐赠"
     cooldown:
       type: "fixed"
@@ -315,7 +315,7 @@ tasks:
         time: 2
 
   Zdy_left:
-    enabled: false
+    enabled: true
     name: "总动员左"
     cooldown:
       type: "fixed" # fixed 或 auto
@@ -360,13 +360,35 @@ tasks:
         y: 357
       - type: "wait"
         time: 1
+      - type: "swipe" # 滑到左头以防新活动影响
+        start_x: 178 # 起始点X坐标
+        start_y: 322 # 起始点Y坐标
+        end_x: 900 # 结束点X坐标
+        end_y: 322 # 结束点Y坐标
+        duration: 200 # 滑动持续时间（毫秒）
+      - type: "wait"
+        time: 1
+      - type: "click" # 点击盟动（3号位）
+        x: 836
+        y: 322
+      # - type: "click" # 点击盟动（2号位）
+      #   x: 522
+      #   y: 322
+      - type: "swipe" # 滑到顶
+        start_x: 545 # 起始点X坐标
+        start_y: 1086 # 起始点Y坐标
+        end_x: 713 # 结束点X坐标
+        end_y: 2159 # 结束点Y坐标
+        duration: 200 # 滑动持续时间（毫秒）
+      - type: "wait"
+        time: 1
       - type: "image_check" #检查是否正在冷却
         image: "images/cooldown.png"
         region:
-          left: 80 # 左边界X坐标
-          top: 1000 # 上边界Y坐标
-          right: 355 # 右边界X坐标
-          bottom: 1355 # 下边界Y坐标
+          left: 87 # 左边界X坐标
+          top: 1002 # 上边界Y坐标
+          right: 514 # 右边界X坐标
+          bottom: 1356 # 下边界Y坐标
         threshold: 0.94 # 自定义匹配阈值
         notify: false # 启用此操作的通知
         skip_if_match: true # 匹配成功时跳过后续操作
@@ -375,10 +397,10 @@ tasks:
       - type: "image_check" # 匹配大拳头（如果匹配到就跳过）
         image: "images/zdy_860.png"
         region:
-          left: 60 # 左边界X坐标
-          top: 985 # 上边界Y坐标
-          right: 355 # 右边界X坐标
-          bottom: 1355 # 下边界Y坐标
+          left: 70 # 左边界X坐标
+          top: 990 # 上边界Y坐标
+          right: 510 # 右边界X坐标
+          bottom: 1356 # 下边界Y坐标
         threshold: 0.95 # 自定义匹配阈值
         notify: true # 启用此操作的通知
         skip_if_match: true # 匹配成功时跳过后续操作
@@ -403,10 +425,10 @@ tasks:
         time: 1
       - type: "get_countdown" # 获取倒计时
         region:
-          left: 170 # 倒计时区域左边界
-          top: 1150 # 倒计时区域上边界
-          right: 330 # 倒计时区域右边界
-          bottom: 1185 # 倒计时区域下边界
+          left: 250 # 倒计时区域左边界
+          top: 1115 # 倒计时区域上边界
+          right: 410 # 倒计时区域右边界
+          bottom: 1150 # 倒计时区域下边界
       - type: "wait"
         time: 1
       - type: "click" #返回
@@ -459,13 +481,35 @@ tasks:
         y: 357
       - type: "wait"
         time: 1
+      - type: "swipe" # 滑到左头以防新活动影响
+        start_x: 178 # 起始点X坐标
+        start_y: 322 # 起始点Y坐标
+        end_x: 900 # 结束点X坐标
+        end_y: 322 # 结束点Y坐标
+        duration: 200 # 滑动持续时间（毫秒）
+      - type: "wait"
+        time: 1
+      - type: "click" # 点击盟动（3号位）
+        x: 836
+        y: 322
+      # - type: "click" # 点击盟动（2号位）
+      #   x: 522
+      #   y: 322
+      - type: "swipe" # 滑到顶
+        start_x: 545 # 起始点X坐标
+        start_y: 1086 # 起始点Y坐标
+        end_x: 713 # 结束点X坐标
+        end_y: 2159 # 结束点Y坐标
+        duration: 200 # 滑动持续时间（毫秒）
+      - type: "wait"
+        time: 1
       - type: "image_check" #检查是否正在冷却
         image: "images/cooldown.png"
         region:
-          left: 400 # 左边界X坐标
-          top: 1000 # 上边界Y坐标
-          right: 675 # 右边界X坐标
-          bottom: 1355 # 下边界Y坐标
+          left: 567 # 左边界X坐标
+          top: 1002 # 上边界Y坐标
+          right: 994 # 右边界X坐标
+          bottom: 1356 # 下边界Y坐标
         threshold: 0.94 # 自定义匹配阈值
         notify: false # 启用此操作的通知
         skip_if_match: true # 匹配成功时跳过后续操作
@@ -474,10 +518,10 @@ tasks:
       - type: "image_check" # 匹配大拳头（如果匹配到就跳过）
         image: "images/zdy_860.png"
         region:
-          left: 380 # 左边界X坐标
-          top: 985 # 上边界Y坐标
-          right: 675 # 右边界X坐标
-          bottom: 1355 # 下边界Y坐标
+          left: 550 # 左边界X坐标
+          top: 990 # 上边界Y坐标
+          right: 990 # 右边界X坐标
+          bottom: 1356 # 下边界Y坐标
         threshold: 0.94 # 自定义匹配阈值
         notify: true # 启用此操作的通知
         skip_if_match: true # 匹配成功时跳过后续操作
@@ -486,8 +530,8 @@ tasks:
       - type: "wait"
         time: 1
       - type: "click" # 点击选项
-        x: 545
-        y: 1175
+        x: 780
+        y: 1150
       - type: "wait"
         time: 1
       - type: "click" # 刷新
@@ -500,12 +544,12 @@ tasks:
         y: 1470
       - type: "wait"
         time: 1
-      - type: "get_countdown" # 获取倒计时
+      - type: "get_countdown"
         region:
-          left: 490 # 倒计时区域左边界
-          top: 1150 # 倒计时区域上边界
-          right: 650 # 倒计时区域右边界
-          bottom: 1185 # 倒计时区域下边界
+          left: 730 # 倒计时区域左边界
+          top: 1115 # 倒计时区域上边界
+          right: 890 # 倒计时区域右边界
+          bottom: 1150 # 倒计时区域下边界
       - type: "wait"
         time: 1
       - type: "click" # 返回
@@ -610,7 +654,7 @@ tasks:
         y: 160
 
   Cxd:
-    enabled: true
+    enabled: false
     name: "返回晨曦岛"
     cooldown:
       type: "fixed" # fixed 或 auto
