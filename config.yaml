@@ -1,6 +1,6 @@
 app_package: "com.gof.china" # 替换为你的应用包名
-idle_timeout: 3000 # 空闲超时时间（秒）
-startup_wait_time: 15 # 应用启动等待时间（秒）
+idle_timeout: 300 # 空闲超时时间（秒）
+startup_wait_time: 12 # 应用启动等待时间（秒）
 
 # 调试相关配置
 debug:
@@ -25,7 +25,7 @@ startup_actions:
     image: "images/close_popup.png" # 关闭可能出现的弹窗
     threshold: 0.7
   - type: "wait"
-    time: 5
+    time: 2
 
 tasks:
   task1:
@@ -36,12 +36,12 @@ tasks:
       time: 200 # 固定等待时间（秒）
     actions:
       - type: "image_check"
-        image: "images/world.png"
+        image: "images/defense.png"
         region:
-          left: 70 # 左边界X坐标
-          top: 990 # 上边界Y坐标
-          right: 510 # 右边界X坐标
-          bottom: 1356 # 下边界Y坐标
+          left: 560 # 左边界X坐标
+          top: 1538 # 上边界Y坐标
+          right: 698 # 右边界X坐标
+          bottom: 1670 # 下边界Y坐标
         threshold: 0.95 # 自定义匹配阈值
         notify: true # 启用此操作的通知
         skip_if_match: true # 匹配成功时跳过后续操作
@@ -315,7 +315,7 @@ tasks:
         time: 2
 
   Zdy_left:
-    enabled: true
+    enabled: false
     name: "总动员左"
     cooldown:
       type: "fixed" # fixed 或 auto
@@ -360,17 +360,17 @@ tasks:
         y: 357
       - type: "wait"
         time: 1
-      - type: "swipe" # 滑到左头以防新活动影响
-        start_x: 178 # 起始点X坐标
-        start_y: 322 # 起始点Y坐标
-        end_x: 900 # 结束点X坐标
-        end_y: 322 # 结束点Y坐标
-        duration: 200 # 滑动持续时间（毫秒）
-      - type: "wait"
-        time: 1
-      - type: "click" # 点击盟动（3号位）
-        x: 836
-        y: 322
+      # - type: "swipe" # 滑到左头以防新活动影响
+      #   start_x: 516 # 起始点X坐标
+      #   start_y: 322 # 起始点Y坐标
+      #   end_x: 241 # 结束点X坐标
+      #   end_y: 322 # 结束点Y坐标
+      #   duration: 300 # 滑动持续时间（毫秒）
+      # - type: "wait"
+      #   time: 1
+      # - type: "click" # 点击盟动（3号位）
+      #   x: 836
+      #   y: 322
       # - type: "click" # 点击盟动（2号位）
       #   x: 522
       #   y: 322
@@ -436,7 +436,7 @@ tasks:
         y: 160
 
   Zdy_right:
-    enabled: false
+    enabled: true
     name: "总动员右"
     cooldown:
       type: "fixed" # fixed 或 auto
@@ -481,17 +481,17 @@ tasks:
         y: 357
       - type: "wait"
         time: 1
-      - type: "swipe" # 滑到左头以防新活动影响
-        start_x: 178 # 起始点X坐标
-        start_y: 322 # 起始点Y坐标
-        end_x: 900 # 结束点X坐标
-        end_y: 322 # 结束点Y坐标
-        duration: 200 # 滑动持续时间（毫秒）
-      - type: "wait"
-        time: 1
-      - type: "click" # 点击盟动（3号位）
-        x: 836
-        y: 322
+      # - type: "swipe" # 滑到左头以防新活动影响
+      #   start_x: 516 # 起始点X坐标
+      #   start_y: 322 # 起始点Y坐标
+      #   end_x: 241 # 结束点X坐标
+      #   end_y: 322 # 结束点Y坐标
+      #   duration: 200 # 滑动持续时间（毫秒）
+      # - type: "wait"
+      #   time: 1
+      # - type: "click" # 点击盟动（3号位）
+      #   x: 836
+      #   y: 322
       # - type: "click" # 点击盟动（2号位）
       #   x: 522
       #   y: 322
@@ -658,7 +658,7 @@ tasks:
     name: "返回晨曦岛"
     cooldown:
       type: "fixed" # fixed 或 auto
-      time: 300 # 固定等待时间（秒）
+      time: 600 # 固定等待时间（秒）
     actions:
       - type: "find_image" # 重新连接
         image: "images/reconnect.png"
@@ -715,3 +715,52 @@ tasks:
       - type: "click" # 点击晨曦岛
         x: 606
         y: 1370
+
+  Repair_wall:
+    enabled: false
+    name: "维修城墙"
+    cooldown:
+      type: "fixed" # fixed 或 auto
+      time: 1860 # 固定等待时间（秒）
+    actions:
+      - type: "swipe" # 滑到城墙
+        start_x: 142 # 起始点X坐标
+        start_y: 1921 # 起始点Y坐标
+        end_x: 927 # 结束点X坐标
+        end_y: 969 # 结束点Y坐标
+        duration: 100 # 滑动持续时间（毫秒）
+      - type: "wait"
+        time: 1
+      - type: "swipe" # 滑到城墙
+        start_x: 123 # 起始点X坐标
+        start_y: 1838 # 起始点Y坐标
+        end_x: 960 # 结束点X坐标
+        end_y: 1380 # 结束点Y坐标
+        duration: 200 # 滑动持续时间（毫秒）
+      - type: "wait"
+        time: 1
+      - type: "find_image" # 找到城墙
+        image: "images/wall.png"
+        threshold: 0.75 # 可选，默认为0.8
+        notify: false # 禁用此操作的通知
+        offset_x: 0 # 可选，点击位置的X偏移量
+        offset_y: 200 # 可选，点击位置的Y偏移量
+        skip_if_match: false # 匹配成功时跳过后续操作
+        skip_count: 0 # 跳过接下来的2个操作
+      - type: "wait"
+        time: 1
+      - type: "find_image" # 找到城镇防御
+        image: "images/defense.png"
+        threshold: 0.8 # 可选，默认为0.8
+        notify: false # 禁用此操作的通知
+        offset_x: 0 # 可选，点击位置的X偏移量
+        offset_y: 0 # 可选，点击位置的Y偏移量
+        skip_if_match: false # 匹配成功时跳过后续操作
+        skip_count: 0 # 跳过接下来的2个操作
+      - type: "wait"
+        time: 1
+      - type: "click" # 点击灭火
+        x: 381
+        y: 2291
+      - type: "wait"
+        time: 1

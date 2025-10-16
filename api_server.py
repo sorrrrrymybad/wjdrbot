@@ -175,8 +175,10 @@ def close_app(package_name):
     """关闭指定的应用"""
     try:
         if task_manager:
-           # 直接使用 ADB 关闭应用
+            # 直接使用 ADB 关闭应用
             task_manager.adb.force_stop_app(package_name)
+            # 更新应用状态
+            task_manager.app_closed = True
             log(f"已强制停止应用: {package_name}")
                 
             return jsonify({

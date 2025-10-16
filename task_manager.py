@@ -92,7 +92,15 @@ class TaskManager:
                         
                         # 如果等待时间超过阈值，关闭应用
                         if wait_seconds > self.idle_timeout and not self.app_closed:
-                            log(f"等待时间 {wait_seconds}秒 超过空闲阈值 {self.idle_timeout}秒")
+                            log(f"等待时间 {wait_seconds}秒 超过空闲阈值 {self.idle_timeout}秒，关闭应用")
+                            self.task_lock.release()
+                            self.close_app_for_idle()
+                            # 重新获取锁
+                            self.task_lock.acquire()
+                    else:
+                        # 如果没有任务在队列中，也检查是否需要关闭应用
+                        if not self.app_closed:
+                            log(f"没有待执行的任务，关闭应用")
                             self.task_lock.release()
                             self.close_app_for_idle()
                             # 重新获取锁
